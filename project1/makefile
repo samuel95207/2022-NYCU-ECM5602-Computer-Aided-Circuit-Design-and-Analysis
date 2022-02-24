@@ -49,6 +49,8 @@ cleanobj :
 	rm -rf $(OBJ_DIR)/*.o
 
 case%:
+	@mkdir -p outputs
 	@$(TARGET) inputs/circuit_netlist_case$(patsubst case%,%,$@).txt outputs/output_mnaMatrix_$(patsubst case%,%,$@).txt outputs/output_xVector_$(patsubst case%,%,$@).txt outputs/output_rhs_$(patsubst case%,%,$@).txt
 leak_case%:
+	@mkdir -p outputs
 	@valgrind $(TARGET) inputs/circuit_netlist_case$(patsubst leak_case%,%,$@).txt outputs/output_mnaMatrix_$(patsubst case%,%,$@).txt outputs/output_xVector_$(patsubst case%,%,$@).txt outputs/output_rhs_$(patsubst case%,%,$@).txt
