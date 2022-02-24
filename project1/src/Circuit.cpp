@@ -114,10 +114,13 @@ void Circuit::readFile(string fileName) {
     reverse(nodeList.begin(), nodeList.end());
 
     _createXVector();
+
+    mnaMatrix = Matrix(xVector.size(), xVector.size());
 }
 
 void Circuit::writeFile(string mnaFilename, string xVecFilename, string rhsFilename) const {
     ofstream mnaFile(mnaFilename.c_str());
+    mnaFile << mnaMatrix;
     mnaFile.close();
 
     ofstream xVecFile(xVecFilename.c_str());

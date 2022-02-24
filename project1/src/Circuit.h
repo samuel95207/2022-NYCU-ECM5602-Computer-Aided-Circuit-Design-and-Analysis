@@ -1,7 +1,7 @@
 #include <list>
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 
 #ifndef __DEVICE_H__
@@ -9,6 +9,7 @@
 #include "devices/Device.h"
 #endif
 
+#include "Matrix.h"
 #include "devices/BjtN.h"
 #include "devices/BjtP.h"
 #include "devices/Capacitor.h"
@@ -28,6 +29,7 @@ class Circuit {
    private:
     list<Device> devices;
     vector<xVectorElement> xVector;
+    Matrix mnaMatrix;
 
     vector<string> nodeList;
     vector<pair<string, Device*>> g2List;
