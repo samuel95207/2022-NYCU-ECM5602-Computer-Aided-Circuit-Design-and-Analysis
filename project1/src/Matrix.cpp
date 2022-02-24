@@ -132,7 +132,21 @@ bool Matrix::isSquare() const { return row == col && isValid(); }
 bool Matrix::isValid() const { return row > 0 && col > 0; }
 
 
-void Matrix::print() const { cout << *this; }
+void Matrix::print() const {
+    cout << "[ ";
+    for (int i = 0; i < row; i++) {
+        if (i != 0) {
+            cout << "  ";
+        }
+        for (int j = 0; j < col; j++) {
+            cout << data[i][j] << " ";
+        }
+        if (i != row - 1) {
+            cout << "\n";
+        }
+    }
+    cout << "]\n";
+}
 
 
 Matrix Matrix::transpose() const {
