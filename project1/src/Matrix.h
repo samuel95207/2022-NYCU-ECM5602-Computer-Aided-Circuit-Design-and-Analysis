@@ -31,7 +31,7 @@ class Matrix {
 
     // Matrix algorithms
     Matrix transpose() const;
-    Matrix getCofactor(int rowCut, int colCut) const;
+    Matrix cofactor(int rowCut, int colCut) const;
     double determinant() const;
     Matrix adjoint() const;
     Matrix inverse() const;

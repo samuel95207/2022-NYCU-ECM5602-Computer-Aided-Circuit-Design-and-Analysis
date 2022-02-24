@@ -157,7 +157,7 @@ Matrix Matrix::transpose() const {
 
 
 
-Matrix Matrix::getCofactor(int rowCut, int colCut) const {
+Matrix Matrix::cofactor(int rowCut, int colCut) const {
     if (!isSquare()) {
         cerr << "Error! Matrix is not square.\n";
         return Matrix();
@@ -197,7 +197,7 @@ double Matrix::determinant() const {
     int sign = 1;
 
     for (int i = 0; i < row; i++) {
-        det += sign * data[0][i] * getCofactor(0, i).determinant();
+        det += sign * data[0][i] * cofactor(0, i).determinant();
         sign = -sign;
     }
 
@@ -222,7 +222,7 @@ Matrix Matrix::adjoint() const {
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
             sign = ((i + j) % 2 == 0) ? 1 : -1;
-            newMatrix.data[j][i] = sign * getCofactor(i, j).determinant();
+            newMatrix.data[j][i] = sign * cofactor(i, j).determinant();
         }
     }
 
