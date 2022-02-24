@@ -91,20 +91,6 @@ void Matrix::setValue(int rowIdx, int colIdx, double value) {
     data[rowIdx][colIdx] = value;
 }
 
-double Matrix::getValue(int rowIdx, int colIdx) {
-    if (rowIdx >= row || rowIdx < 0) {
-        cerr << "Error! Row index out of bound\n";
-        return 0;
-    }
-    if (colIdx >= col || colIdx < 0) {
-        cerr << "Error! Col index out of bound\n";
-        return 0;
-    }
-    return data[rowIdx][colIdx];
-}
-
-pair<int, int> Matrix::getSize() { return pair<int, int>(row, col); }
-
 bool Matrix::setIdentity() {
     if (!isSquare()) {
         return false;
@@ -123,13 +109,40 @@ bool Matrix::setIdentity() {
     return true;
 }
 
+double Matrix::getValue(int rowIdx, int colIdx) const {
+    if (rowIdx >= row || rowIdx < 0) {
+        cerr << "Error! Row index out of bound\n";
+        return 0;
+    }
+    if (colIdx >= col || colIdx < 0) {
+        cerr << "Error! Col index out of bound\n";
+        return 0;
+    }
+    return data[rowIdx][colIdx];
+}
 
-bool Matrix::isSquare() { return row == col && isValid(); }
-
-bool Matrix::isValid() { return row > 0 && col > 0; }
+pair<int, int> Matrix::getSize() const { return pair<int, int>(row, col); }
 
 
-void Matrix::print() {
+Matrix Matrix::transpose() const {
+    Matrix newMatrix(col, row);
+
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            newMatrix.data[j][i] = data[i][j];
+        }
+    }
+
+    return newMatrix;
+}
+
+
+bool Matrix::isSquare() const { return row == col && isValid(); }
+
+bool Matrix::isValid() const { return row > 0 && col > 0; }
+
+
+void Matrix::print() const {
     cout << "[ ";
     for (int i = 0; i < row; i++) {
         if (i != 0) {

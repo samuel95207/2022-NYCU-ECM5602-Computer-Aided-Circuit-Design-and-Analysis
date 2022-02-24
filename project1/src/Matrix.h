@@ -19,12 +19,13 @@ class Matrix {
     void fill(double value);
     void clear();
     void setValue(int rowIdx, int colIdx, double value);
-    double getValue(int rowIdx, int colIdx);
-    pair<int, int> getSize();
     bool setIdentity();
-    bool isSquare();
-    bool isValid(); 
-    void print();
+    double getValue(int rowIdx, int colIdx) const;
+    pair<int, int> getSize() const;
+    Matrix transpose() const;
+    bool isSquare() const;
+    bool isValid() const; 
+    void print() const;
 
     Matrix& operator=(const Matrix& matrix);
     Matrix& operator=(const initializer_list<initializer_list<double>>& arr2D);
