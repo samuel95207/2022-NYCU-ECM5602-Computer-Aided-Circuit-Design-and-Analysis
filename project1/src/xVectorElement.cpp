@@ -13,10 +13,10 @@ xVectorElement::xVectorElement(string name, xVectorElementType type, Device *dev
     }
 }
 
-string xVectorElement::getName() { return name; }
+string xVectorElement::getName() const { return name; }
 
 
-ostream &operator<<(ostream &out, xVectorElement &element) {
+ostream &operator<<(ostream &out, const xVectorElement &element) {
     if (element.type == xVectorElementType::NODE) {
         out << "V(" << element.name << ")";
     } else if (element.type == xVectorElementType::G2) {

@@ -19,6 +19,6 @@ class xVectorElement {
 
    public:
     xVectorElement(string name, xVectorElementType type, Device *device = nullptr);
-    string getName();
-    friend ostream &operator<<(std::ostream &out, xVectorElement &element);
+    string getName() const;
+    friend ostream &operator<<(std::ostream &out,const xVectorElement &element);
 };

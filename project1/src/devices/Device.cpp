@@ -9,14 +9,14 @@
 using namespace std;
 
 
-DeviceType Device::getType() { return type; }
+DeviceType Device::getType() const { return type; }
 
-string Device::getGroup() { return group; }
+string Device::getGroup() const { return group; }
 
-vector<string> Device::getNodes() { return nodes; }
+vector<string> Device::getNodes() const { return nodes; }
 
 
-void Device::printInfo() {
+void Device::printInfo() const {
     cout << "name = " << name << "\n";
     cout << "index = " << index << "\n";
 

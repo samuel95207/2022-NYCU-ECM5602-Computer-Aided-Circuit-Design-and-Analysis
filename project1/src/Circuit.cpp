@@ -116,7 +116,7 @@ void Circuit::readFile(string fileName) {
     _createXVector();
 }
 
-void Circuit::writeFile(string mnaFilename, string xVecFilename, string rhsFilename) {
+void Circuit::writeFile(string mnaFilename, string xVecFilename, string rhsFilename) const {
     ofstream mnaFile(mnaFilename.c_str());
     mnaFile.close();
 
@@ -131,7 +131,7 @@ void Circuit::writeFile(string mnaFilename, string xVecFilename, string rhsFilen
 }
 
 
-void Circuit::printDevices() {
+void Circuit::printDevices() const {
     for (auto device : devices) {
         device.printInfo();
         cout << "\n";

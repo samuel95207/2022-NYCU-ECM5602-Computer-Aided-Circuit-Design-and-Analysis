@@ -40,8 +40,8 @@ class Circuit {
    public:
     Circuit();
     void readFile(string fileName);
-    void writeFile(string mnaFilename, string xVecFilename, string rhsFilename);
-    void printDevices();
+    void writeFile(string mnaFilename, string xVecFilename, string rhsFilename) const;
+    void printDevices() const;
 
    private:
     void _createXVector();
