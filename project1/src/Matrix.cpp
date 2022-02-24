@@ -542,18 +542,11 @@ bool Matrix::operator!=(const Matrix& matrix) const { return !operator==(matrix)
 
 
 ostream& operator<<(ostream& out, const Matrix& matrix) {
-    out << "[ ";
     for (int i = 0; i < matrix.row; i++) {
-        if (i != 0) {
-            out << "  ";
-        }
         for (int j = 0; j < matrix.col; j++) {
             out << matrix.data[i][j] << " ";
         }
-        if (i != matrix.row - 1) {
-            out << "\n";
-        }
+        out << "\n";
     }
-    out << "]\n";
     return out;
 }
