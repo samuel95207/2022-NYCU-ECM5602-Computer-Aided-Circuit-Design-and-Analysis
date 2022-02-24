@@ -13,6 +13,9 @@ xVectorElement::xVectorElement(string name, xVectorElementType type, Device *dev
     }
 }
 
+string xVectorElement::getName() { return name; }
+
+
 ostream &operator<<(ostream &out, xVectorElement &element) {
     if (element.type == xVectorElementType::NODE) {
         out << "V(" << element.name << ")";

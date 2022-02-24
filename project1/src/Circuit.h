@@ -1,6 +1,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 
 #ifndef __DEVICE_H__
@@ -30,6 +31,10 @@ class Circuit {
 
     vector<string> nodeList;
     vector<pair<string, Device*>> g2List;
+
+    unordered_map<string, int> xIndexMap;
+    unordered_map<int, string> indexXMap;
+
 
 
    public:

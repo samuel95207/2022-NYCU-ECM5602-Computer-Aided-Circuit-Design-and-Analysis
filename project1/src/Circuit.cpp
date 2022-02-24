@@ -148,4 +148,11 @@ void Circuit::_createXVector() {
     }
 
     reverse(xVector.begin(), xVector.end());
+
+    int size = xVector.size();
+    for (int i = 0; i < size; i++) {
+        string name = xVector[i].getName();
+        xIndexMap[name] = i;
+        indexXMap[i] = name;
+    }
 }
