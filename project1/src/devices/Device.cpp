@@ -13,6 +13,8 @@ DeviceType Device::getType() { return type; }
 
 string Device::getGroup() { return group; }
 
+vector<string> Device::getNodes() { return nodes; }
+
 
 void Device::printInfo() {
     cout << "name = " << name << "\n";

@@ -89,16 +89,6 @@ void Circuit::readFile(string fileName) {
                 break;
         }
         if (device.getType() != DeviceType::NONE) {
-            if (node0 != "" && node0 != "0" && find(nodeList.begin(), nodeList.end(), node0) == nodeList.end()) {
-                nodeList.push_back(node0);
-            }
-            if (node1 != "" && node1 != "0" && find(nodeList.begin(), nodeList.end(), node1) == nodeList.end()) {
-                nodeList.push_back(node1);
-            }
-            if (node2 != "" && node2 != "0" && find(nodeList.begin(), nodeList.end(), node2) == nodeList.end()) {
-                nodeList.push_back(node2);
-            }
-
             if (device.getType() == DeviceType::VOLTAGE_SRC ||
                 (device.getType() == DeviceType::RESISTOR &&
                  (device.getGroup() == "G2" || device.getGroup() == "g2"))) {
@@ -110,6 +100,18 @@ void Circuit::readFile(string fileName) {
     }
 
     infile.close();
+
+
+    for (auto it = devices.rbegin(); it != devices.rend(); ++it) {
+        auto device = *it;
+        auto nodes = device.getNodes();
+        for (auto node : nodes) {
+            if (node != "" && node != "0" && find(nodeList.begin(), nodeList.end(), node) == nodeList.end()) {
+                nodeList.push_back(node);
+            }
+        }
+    }
+    reverse(nodeList.begin(), nodeList.end());
 
     _createXVector();
 }

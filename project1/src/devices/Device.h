@@ -30,5 +30,6 @@ class Device {
    public:
     DeviceType getType();
     string getGroup();
+    vector<string> getNodes();
     void printInfo();
 };
