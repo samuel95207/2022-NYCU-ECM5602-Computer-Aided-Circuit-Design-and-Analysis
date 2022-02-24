@@ -79,16 +79,17 @@ void Matrix::fill(double value) {
 
 void Matrix::clear() { fill(0); }
 
-void Matrix::setValue(int rowIdx, int colIdx, double value) {
+bool Matrix::setValue(int rowIdx, int colIdx, double value) {
     if (rowIdx >= row || rowIdx < 0) {
         cerr << "Error! Row index out of bound\n";
-        return;
+        return false;;
     }
     if (colIdx >= col || colIdx < 0) {
         cerr << "Error! Col index out of bound\n";
-        return;
+        return false;
     }
     data[rowIdx][colIdx] = value;
+    return true;
 }
 
 bool Matrix::setIdentity() {

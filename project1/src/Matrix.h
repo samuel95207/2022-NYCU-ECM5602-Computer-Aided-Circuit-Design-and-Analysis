@@ -18,7 +18,7 @@ class Matrix {
 
     void fill(double value);
     void clear();
-    void setValue(int rowIdx, int colIdx, double value);
+    bool setValue(int rowIdx, int colIdx, double value);
     bool setIdentity();
     double getValue(int rowIdx, int colIdx) const;
     pair<int, int> getSize() const;
