@@ -89,13 +89,13 @@ void Circuit::readFile(string fileName) {
                 break;
         }
         if (device.getType() != DeviceType::NONE) {
-            if (node0 != "" && find(nodeList.begin(), nodeList.end(), node0) == nodeList.end()) {
+            if (node0 != "" && node0 != "0" && find(nodeList.begin(), nodeList.end(), node0) == nodeList.end()) {
                 nodeList.push_back(node0);
             }
-            if (node1 != "" && find(nodeList.begin(), nodeList.end(), node1) == nodeList.end()) {
+            if (node1 != "" && node1 != "0" && find(nodeList.begin(), nodeList.end(), node1) == nodeList.end()) {
                 nodeList.push_back(node1);
             }
-            if (node2 != "" && find(nodeList.begin(), nodeList.end(), node2) == nodeList.end()) {
+            if (node2 != "" && node2 != "0" && find(nodeList.begin(), nodeList.end(), node2) == nodeList.end()) {
                 nodeList.push_back(node2);
             }
 
