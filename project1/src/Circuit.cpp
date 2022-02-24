@@ -1,5 +1,6 @@
 #include "Circuit.h"
 
+#include <algorithm>
 #include <cctype>
 #include <fstream>
 #include <iostream>
@@ -88,12 +89,45 @@ void Circuit::readFile(string fileName) {
                 break;
         }
         if (device.getType() != DeviceType::NONE) {
+            if (node0 != "" && find(nodeList.begin(), nodeList.end(), node0) == nodeList.end()) {
+                nodeList.push_back(node0);
+            }
+            if (node1 != "" && find(nodeList.begin(), nodeList.end(), node1) == nodeList.end()) {
+                nodeList.push_back(node1);
+            }
+            if (node2 != "" && find(nodeList.begin(), nodeList.end(), node2) == nodeList.end()) {
+                nodeList.push_back(node2);
+            }
+
+            if (device.getType() == DeviceType::VOLTAGE_SRC ||
+                (device.getType() == DeviceType::RESISTOR &&
+                 (device.getGroup() == "G2" || device.getGroup() == "g2"))) {
+                g2List.push_back(pair<string, Device*>(name, &device));
+            }
+
             devices.push_back(device);
         }
     }
 
     infile.close();
+
+    _createXVector();
 }
+
+void Circuit::writeFile(string mnaFilename, string xVecFilename, string rhsFilename) {
+    ofstream mnaFile(mnaFilename.c_str());
+    mnaFile.close();
+
+    ofstream xVecFile(xVecFilename.c_str());
+    for (auto element : xVector) {
+        xVecFile << element << "\n";
+    }
+    xVecFile.close();
+
+    ofstream rhsFile(rhsFilename.c_str());
+    rhsFile.close();
+}
+
 
 void Circuit::printDevices() {
     for (auto device : devices) {
@@ -101,3 +135,15 @@ void Circuit::printDevices() {
         cout << "\n";
     }
 };
+
+
+void Circuit::_createXVector() {
+    for (auto devicePair : g2List) {
+        xVector.push_back(xVectorElement(devicePair.first, xVectorElementType::G2, devicePair.second));
+    }
+    for (auto node : nodeList) {
+        xVector.push_back(xVectorElement(node, xVectorElementType::NODE));
+    }
+
+    reverse(xVector.begin(), xVector.end());
+}

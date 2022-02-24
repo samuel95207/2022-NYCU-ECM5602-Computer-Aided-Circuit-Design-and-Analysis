@@ -11,6 +11,9 @@ using namespace std;
 
 DeviceType Device::getType() { return type; }
 
+string Device::getGroup() { return group; }
+
+
 void Device::printInfo() {
     cout << "name = " << name << "\n";
     cout << "index = " << index << "\n";

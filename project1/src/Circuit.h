@@ -1,5 +1,6 @@
 #include <list>
 #include <string>
+#include <vector>
 
 
 #ifndef __DEVICE_H__
@@ -17,6 +18,7 @@
 #include "devices/MosfetP.h"
 #include "devices/Resistor.h"
 #include "devices/VoltageSource.h"
+#include "xVectorElement.h"
 
 
 using namespace std;
@@ -24,9 +26,18 @@ using namespace std;
 class Circuit {
    private:
     list<Device> devices;
+    vector<xVectorElement> xVector;
+
+    vector<string> nodeList;
+    vector<pair<string, Device*>> g2List;
+
 
    public:
     Circuit();
     void readFile(string fileName);
+    void writeFile(string mnaFilename, string xVecFilename, string rhsFilename);
     void printDevices();
+
+   private:
+    void _createXVector();
 };

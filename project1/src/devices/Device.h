@@ -29,5 +29,6 @@ class Device {
 
    public:
     DeviceType getType();
+    string getGroup();
     void printInfo();
 };
