@@ -171,6 +171,7 @@ Matrix& Matrix::operator=(const initializer_list<initializer_list<double>>& arr2
 
 Matrix& Matrix::operator+=(const Matrix& matrix) {
     if (row != matrix.row || col != matrix.col) {
+        cerr << "Error! dimention error.\n";
         return *this;
     }
     for (int i = 0; i < row; i++) {
@@ -183,6 +184,7 @@ Matrix& Matrix::operator+=(const Matrix& matrix) {
 
 Matrix& Matrix::operator-=(const Matrix& matrix) {
     if (row != matrix.row || col != matrix.col) {
+        cerr << "Error! dimention error.\n";
         return *this;
     }
     for (int i = 0; i < row; i++) {
@@ -195,6 +197,7 @@ Matrix& Matrix::operator-=(const Matrix& matrix) {
 
 Matrix& Matrix::operator*=(const Matrix& matrix) {
     if (row != matrix.row || col != matrix.col) {
+        cerr << "Error! dimention error.\n";
         return *this;
     }
     for (int i = 0; i < row; i++) {
@@ -207,6 +210,7 @@ Matrix& Matrix::operator*=(const Matrix& matrix) {
 
 Matrix& Matrix::operator/=(const Matrix& matrix) {
     if (row != matrix.row || col != matrix.col) {
+        cerr << "Error! dimention error.\n";
         return *this;
     }
     for (int i = 0; i < row; i++) {
@@ -235,8 +239,20 @@ Matrix& Matrix::operator/=(const double& d) {
     return *this;
 }
 
+Matrix& Matrix::operator&=(const Matrix& matrix) {
+    if (col != matrix.row) {
+        cerr << "Error! dimention error.\n";
+        return *this;
+    }
+    
+    *this = this->operator&(matrix);
+
+    return *this;
+}
+
 Matrix Matrix::operator+(const Matrix& matrix) const {
     if (row != matrix.row || col != matrix.col) {
+        cerr << "Error! dimention error.\n";
         return Matrix();
     }
     Matrix newMatrix(row, col);
@@ -252,6 +268,7 @@ Matrix Matrix::operator+(const Matrix& matrix) const {
 
 Matrix Matrix::operator-(const Matrix& matrix) const {
     if (row != matrix.row || col != matrix.col) {
+        cerr << "Error! dimention error.\n";
         return Matrix();
     }
     Matrix newMatrix(row, col);
@@ -267,6 +284,7 @@ Matrix Matrix::operator-(const Matrix& matrix) const {
 
 Matrix Matrix::operator*(const Matrix& matrix) const {
     if (row != matrix.row || col != matrix.col) {
+        cerr << "Error! dimention error.\n";
         return Matrix();
     }
     Matrix newMatrix(row, col);
@@ -282,6 +300,7 @@ Matrix Matrix::operator*(const Matrix& matrix) const {
 
 Matrix Matrix::operator/(const Matrix& matrix) const {
     if (row != matrix.row || col != matrix.col) {
+        cerr << "Error! dimention error.\n";
         return Matrix();
     }
     Matrix newMatrix(row, col);
@@ -314,6 +333,27 @@ Matrix Matrix::operator/(const double& d) const {
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < col; j++) {
             newMatrix.data[i][j] = data[i][j] / d;
+        }
+    }
+
+    return newMatrix;
+}
+
+Matrix Matrix::operator&(const Matrix& matrix) const {
+    if (col != matrix.row) {
+        cerr << "Error! dimention error.\n";
+        return Matrix();
+    }
+
+    Matrix newMatrix(row, matrix.col);
+
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < matrix.col; j++) {
+            double sum = 0.0;
+            for (int k = 0; k < col; k++) {
+                sum += data[i][k] * matrix.data[k][j];
+            }
+            newMatrix.data[i][j] = sum;
         }
     }
 

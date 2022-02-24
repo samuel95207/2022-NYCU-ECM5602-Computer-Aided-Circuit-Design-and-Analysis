@@ -31,12 +31,14 @@ class Matrix {
     Matrix& operator/=(const Matrix& matrix);
     Matrix& operator*=(const double& d);
     Matrix& operator/=(const double& d);
+    Matrix& operator&=(const Matrix& matrix);
     Matrix operator+(const Matrix& matrix) const;
     Matrix operator-(const Matrix& matrix) const;
     Matrix operator*(const Matrix& matrix) const;
     Matrix operator/(const Matrix& matrix) const;
     Matrix operator*(const double& d) const;
     Matrix operator/(const double& d) const;
+    Matrix operator&(const Matrix& matrix) const;
     friend Matrix operator*(const double& d, const Matrix& matrix);
     Matrix operator-() const;
     Matrix operator+() const;
