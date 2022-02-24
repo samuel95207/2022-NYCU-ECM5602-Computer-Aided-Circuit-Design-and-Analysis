@@ -82,7 +82,8 @@ void Matrix::clear() { fill(0); }
 bool Matrix::setValue(int rowIdx, int colIdx, double value) {
     if (rowIdx >= row || rowIdx < 0) {
         cerr << "Error! Row index out of bound\n";
-        return false;;
+        return false;
+        ;
     }
     if (colIdx >= col || colIdx < 0) {
         cerr << "Error! Col index out of bound\n";
@@ -125,6 +126,15 @@ double Matrix::getValue(int rowIdx, int colIdx) const {
 pair<int, int> Matrix::getSize() const { return pair<int, int>(row, col); }
 
 
+
+bool Matrix::isSquare() const { return row == col && isValid(); }
+
+bool Matrix::isValid() const { return row > 0 && col > 0; }
+
+
+void Matrix::print() const { cout << *this; }
+
+
 Matrix Matrix::transpose() const {
     Matrix newMatrix(col, row);
 
@@ -138,26 +148,112 @@ Matrix Matrix::transpose() const {
 }
 
 
-bool Matrix::isSquare() const { return row == col && isValid(); }
 
-bool Matrix::isValid() const { return row > 0 && col > 0; }
+Matrix Matrix::getCofactor(int rowCut, int colCut) const {
+    if (!isSquare()) {
+        cerr << "Error! Matrix is not square.\n";
+        return Matrix();
+    }
+    Matrix newMatrix(row - 1, col - 1);
+    int newRowIdx = 0, newColIdx = 0;
 
+    for (int rowIdx = 0; rowIdx < row; rowIdx++) {
+        for (int colIdx = 0; colIdx < col; colIdx++) {
+            if (rowIdx != rowCut && colIdx != colCut) {
+                newMatrix.data[newRowIdx][newColIdx] = data[rowIdx][colIdx];
 
-void Matrix::print() const {
-    cout << "[ ";
-    for (int i = 0; i < row; i++) {
-        if (i != 0) {
-            cout << "  ";
-        }
-        for (int j = 0; j < col; j++) {
-            cout << data[i][j] << " ";
-        }
-        if (i != row - 1) {
-            cout << "\n";
+                newColIdx++;
+                if (newColIdx == newMatrix.row) {
+                    newColIdx = 0;
+                    newRowIdx++;
+                }
+            }
         }
     }
-    cout << "]\n";
+
+    return newMatrix;
 }
+
+
+double Matrix::determinant() const {
+    if (!isSquare()) {
+        cerr << "Error! Matrix is not square.\n";
+        return 0.0;
+    }
+
+    if (row == 1) {
+        return data[0][0];
+    }
+
+    double det = 0.0;
+    int sign = 1;
+
+    for (int i = 0; i < row; i++) {
+        det += sign * data[0][i] * getCofactor(0, i).determinant();
+        sign = -sign;
+    }
+
+    return det;
+}
+
+
+Matrix Matrix::adjoint() const {
+    if (!isSquare()) {
+        cerr << "Error! Matrix is not square.\n";
+        return Matrix();
+    }
+
+    Matrix newMatrix(row, col);
+
+    if (row == 1) {
+        newMatrix.data[0][0] = 1;
+        return newMatrix;
+    }
+
+    int sign = 1;
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            sign = ((i + j) % 2 == 0) ? 1 : -1;
+            newMatrix.data[j][i] = sign * getCofactor(i, j).determinant();
+        }
+    }
+
+    return newMatrix;
+}
+
+Matrix Matrix::inverse() const {
+    if (!isSquare()) {
+        cerr << "Error! Matrix is not square.\n";
+        return Matrix();
+    }
+
+    float det = determinant();
+    if (det == 0.0) {
+        cerr << "Error! Singular Matrix, inverse does not exist.";
+        return Matrix();
+    }
+
+    return adjoint() / det;
+}
+
+
+Matrix Matrix::solveEquation(const Matrix& coefficientMatrix, const Matrix& resultMatrix) {
+    Matrix inv = coefficientMatrix.inverse();
+    if (!inv.isValid()) {
+        return Matrix();
+    }
+    if (coefficientMatrix.col != resultMatrix.row) {
+        if (coefficientMatrix.col != resultMatrix.col) {
+            cerr << "Error! dimention error.\n";
+            return Matrix();
+        }
+        return inv & resultMatrix.transpose();
+    }
+
+    return inv & resultMatrix;
+}
+
+
 
 
 Matrix& Matrix::operator=(const Matrix& matrix) {
@@ -443,3 +539,21 @@ bool Matrix::operator==(const Matrix& matrix) const {
 
 
 bool Matrix::operator!=(const Matrix& matrix) const { return !operator==(matrix); }
+
+
+ostream& operator<<(ostream& out, const Matrix& matrix) {
+    out << "[ ";
+    for (int i = 0; i < matrix.row; i++) {
+        if (i != 0) {
+            out << "  ";
+        }
+        for (int j = 0; j < matrix.col; j++) {
+            out << matrix.data[i][j] << " ";
+        }
+        if (i != matrix.row - 1) {
+            out << "\n";
+        }
+    }
+    out << "]\n";
+    return out;
+}
