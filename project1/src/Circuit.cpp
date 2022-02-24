@@ -91,6 +91,8 @@ void Circuit::readFile(string fileName) {
             devices.push_back(device);
         }
     }
+
+    infile.close();
 }
 
 void Circuit::printDevices() {
