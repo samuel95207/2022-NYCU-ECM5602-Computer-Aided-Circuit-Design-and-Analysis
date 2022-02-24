@@ -21,6 +21,9 @@ class Matrix {
     void setValue(int rowIdx, int colIdx, double value);
     double getValue(int rowIdx, int colIdx);
     pair<int, int> getSize();
+    bool setIdentity();
+    bool isSquare();
+    bool isValid(); 
     void print();
 
     Matrix& operator=(const Matrix& matrix);

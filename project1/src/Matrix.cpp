@@ -105,6 +105,29 @@ double Matrix::getValue(int rowIdx, int colIdx) {
 
 pair<int, int> Matrix::getSize() { return pair<int, int>(row, col); }
 
+bool Matrix::setIdentity() {
+    if (!isSquare()) {
+        return false;
+    }
+
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            if (i == j) {
+                data[i][j] = 1;
+            } else {
+                data[i][j] = 0;
+            }
+        }
+    }
+
+    return true;
+}
+
+
+bool Matrix::isSquare() { return row == col && isValid(); }
+
+bool Matrix::isValid() { return row > 0 && col > 0; }
+
 
 void Matrix::print() {
     cout << "[ ";
@@ -244,7 +267,7 @@ Matrix& Matrix::operator&=(const Matrix& matrix) {
         cerr << "Error! dimention error.\n";
         return *this;
     }
-    
+
     *this = this->operator&(matrix);
 
     return *this;
