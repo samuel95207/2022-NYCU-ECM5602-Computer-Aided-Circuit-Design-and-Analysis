@@ -1,6 +1,7 @@
 #include "Matrix.h"
 
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -272,17 +273,21 @@ bool Matrix::stamp(const Matrix& matrix, const vector<int>& rowOffsets, const ve
         cerr << "Error! stamping matrix col out of bound.\n";
         return false;
     }
-    if (matrix.row != rowOffsets.size()) {
+
+    int rowOffsetsSize = rowOffsets.size();
+    int colOffsetsSize = colOffsets.size();
+
+    if (matrix.row != rowOffsetsSize) {
         cerr << "Error! stamping matrix row != rowOffsets.size().\n";
         return false;
     }
-    if (matrix.col != colOffsets.size()) {
+    if (matrix.col != colOffsetsSize) {
         cerr << "Error! stamping matrix col != colOffsets.size().\n";
         return false;
     }
 
-    for (int i = 0;i < rowOffsets.size();i++) {
-        for (int j = 0;j < colOffsets.size();j++) {
+    for (int i = 0;i < rowOffsetsSize;i++) {
+        for (int j = 0;j < colOffsetsSize;j++) {
             int rowOffset = rowOffsets[i];
             int colOffset = colOffsets[j];
 
