@@ -11,6 +11,12 @@ using namespace std;
 
 
 Circuit::Circuit() {}
+Circuit::~Circuit() {
+    for(auto device : devices){
+        delete device;
+    }
+}
+
 
 void Circuit::readFile(string fileName) {
     ifstream infile(fileName.c_str());
@@ -18,7 +24,7 @@ void Circuit::readFile(string fileName) {
     while (getline(infile, line)) {
         istringstream iss(line);
 
-        Device device;
+        Device* device;
 
         string name, node0, node1, node2, group, valueStr;
         double value;
@@ -28,35 +34,35 @@ void Circuit::readFile(string fileName) {
         switch (typeChar) {
             case 'V':
                 iss >> node0 >> node1 >> value;
-                device = VoltageSource(name, node0, node1, value);
+                device = new VoltageSource(name, node0, node1, value);
                 break;
             case 'I':
                 iss >> node0 >> node1 >> value;
-                device = CurrentSource(name, node0, node1, value);
+                device = new CurrentSource(name, node0, node1, value);
                 break;
             case 'R':
                 iss >> node0 >> node1 >> value >> group;
                 if (group == "" || group[0] == '%') {
-                    device = Resistor(name, node0, node1, value);
+                    device = new Resistor(name, node0, node1, value);
                 } else {
-                    device = Resistor(name, node0, node1, value, group);
+                    device = new Resistor(name, node0, node1, value, group);
                 }
                 break;
             case 'C':
                 iss >> node0 >> node1 >> value;
-                device = Capacitor(name, node0, node1, value);
+                device = new Capacitor(name, node0, node1, value);
                 break;
             case 'L':
                 iss >> node0 >> node1 >> value;
-                device = Inductor(name, node0, node1, value);
+                device = new Inductor(name, node0, node1, value);
                 break;
             case 'D':
                 iss >> node0 >> node1 >> valueStr;
                 if (valueStr == "" || valueStr[0] == '%') {
-                    device = Diode(name, node0, node1);
+                    device = new Diode(name, node0, node1);
                 } else {
                     value = atof(valueStr.c_str());
-                    device = Diode(name, node0, node1, value);
+                    device = new Diode(name, node0, node1, value);
                 }
                 break;
             case 'Q':
@@ -67,9 +73,9 @@ void Circuit::readFile(string fileName) {
                     value = atof(valueStr.c_str());
                 }
                 if (subtypeChar == 'N') {
-                    device = BjtN(name, node0, node1, node2, value);
+                    device = new BjtN(name, node0, node1, node2, value);
                 } else if (subtypeChar == 'P') {
-                    device = BjtP(name, node0, node1, node2, value);
+                    device = new BjtP(name, node0, node1, node2, value);
                 }
                 break;
             case 'M':
@@ -80,19 +86,19 @@ void Circuit::readFile(string fileName) {
                     value = atof(valueStr.c_str());
                 }
                 if (subtypeChar == 'N') {
-                    device = MosfetN(name, node0, node1, node2, value);
+                    device = new MosfetN(name, node0, node1, node2, value);
                 } else if (subtypeChar == 'P') {
-                    device = MosfetP(name, node0, node1, node2, value);
+                    device = new MosfetP(name, node0, node1, node2, value);
                 }
                 break;
             default:
                 break;
         }
-        if (device.getType() != DeviceType::NONE) {
-            if (device.getType() == DeviceType::VOLTAGE_SRC ||
-                (device.getType() == DeviceType::RESISTOR &&
-                 (device.getGroup() == "G2" || device.getGroup() == "g2"))) {
-                g2List.push_back(pair<string, Device*>(name, &device));
+        if (device->getType() != DeviceType::NONE) {
+            if (device->getType() == DeviceType::VOLTAGE_SRC ||
+                (device->getType() == DeviceType::RESISTOR &&
+                 (device->getGroup() == "G2" || device->getGroup() == "g2"))) {
+                g2List.push_back(pair<string, Device*>(name, device));
             }
 
             devices.push_back(device);
@@ -104,7 +110,7 @@ void Circuit::readFile(string fileName) {
 
     for (auto it = devices.rbegin(); it != devices.rend(); ++it) {
         auto device = *it;
-        auto nodes = device.getNodes();
+        auto nodes = device->getNodes();
         for (auto node : nodes) {
             if (node != "" && node != "0" && find(nodeList.begin(), nodeList.end(), node) == nodeList.end()) {
                 nodeList.push_back(node);
@@ -138,7 +144,7 @@ void Circuit::writeFile(string mnaFilename, string xVecFilename, string rhsFilen
 
 void Circuit::printDevices() const {
     for (auto device : devices) {
-        device.printInfo();
+        device->printInfo();
         cout << "\n";
     }
 };
@@ -146,22 +152,22 @@ void Circuit::printDevices() const {
 
 void Circuit::applyStamps() {
     for (auto device : devices) {
-        if (device.getType() == DeviceType::VOLTAGE_SRC) {
-            int row = xIndexMap[device.getName()];
-            double newValue = rhsMatrix.getValue(row, 0) + device.getValue();
+        if (device->getType() == DeviceType::VOLTAGE_SRC) {
+            int row = xIndexMap[device->getName()];
+            double newValue = rhsMatrix.getValue(row, 0) + device->getValue();
             rhsMatrix.setValue(row, 0, newValue);
-        } else if (device.getType() == DeviceType::CURRENT_SRC) {
-            auto nodes = device.getNodes();
+        } else if (device->getType() == DeviceType::CURRENT_SRC) {
+            auto nodes = device->getNodes();
             string nodeP = nodes[0];
             string nodeN = nodes[1];
             if (nodeP != "0") {
                 int nodePRow = xIndexMap[nodeP];
-                double newNodePValue = rhsMatrix.getValue(nodePRow, 0) - device.getValue();
+                double newNodePValue = rhsMatrix.getValue(nodePRow, 0) - device->getValue();
                 rhsMatrix.setValue(nodePRow, 0, newNodePValue);
             }
             if (nodeN != "0") {
                 int nodeNRow = xIndexMap[nodeN];
-                double newNodeNValue = rhsMatrix.getValue(nodeNRow, 0) + device.getValue();
+                double newNodeNValue = rhsMatrix.getValue(nodeNRow, 0) + device->getValue();
                 rhsMatrix.setValue(nodeNRow, 0, newNodeNValue);
             }
         }

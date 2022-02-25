@@ -10,4 +10,5 @@ using namespace std;
 class VoltageSource : public Device {
    public:
     VoltageSource(string name_in, string node_p, string node_n, double value_in = -1.0);
+    virtual Matrix stampMatrix() const override;
 };

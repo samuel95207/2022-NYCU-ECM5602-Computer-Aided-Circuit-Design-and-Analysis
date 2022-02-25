@@ -9,7 +9,12 @@
 #include "devices/Device.h"
 #endif
 
+#ifndef __MATRIX_H__
+#define __MATRIX_H__
 #include "Matrix.h"
+#endif
+
+
 #include "devices/BjtN.h"
 #include "devices/BjtP.h"
 #include "devices/Capacitor.h"
@@ -27,7 +32,7 @@ using namespace std;
 
 class Circuit {
    private:
-    list<Device> devices;
+    list<Device*> devices;
     vector<xVectorElement> xVector;
     Matrix mnaMatrix;
     Matrix rhsMatrix;
@@ -42,6 +47,7 @@ class Circuit {
 
    public:
     Circuit();
+    ~Circuit();
 
     // I/O
     void readFile(string fileName);

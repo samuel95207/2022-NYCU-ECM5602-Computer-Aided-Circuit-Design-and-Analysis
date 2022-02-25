@@ -10,3 +10,7 @@ BjtN::BjtN(string name_in, string node_C, string node_B, string node_E, double v
     nodes[2] = node_E;
     value = value_in;
 }
+
+Matrix BjtN::stampMatrix() const{
+    return Matrix();
+}

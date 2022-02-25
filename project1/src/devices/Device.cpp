@@ -8,6 +8,7 @@
 
 using namespace std;
 
+Device::~Device(){}
 
 string Device::getName() const { return name; }
 

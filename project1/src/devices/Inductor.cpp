@@ -9,3 +9,7 @@ Inductor::Inductor(string name_in, string node_p, string node_n, double value_in
     nodes[1] = node_n;
     value = value_in;
 }
+
+Matrix Inductor::stampMatrix() const{
+    return Matrix();
+}

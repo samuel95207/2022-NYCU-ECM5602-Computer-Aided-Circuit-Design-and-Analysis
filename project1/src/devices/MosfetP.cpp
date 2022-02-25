@@ -10,3 +10,7 @@ MosfetP::MosfetP(string name_in, string node_D, string node_G, string node_S, do
     nodes[2] = node_S;
     value = value_in;
 }
+
+Matrix MosfetP::stampMatrix() const{
+    return Matrix();
+}

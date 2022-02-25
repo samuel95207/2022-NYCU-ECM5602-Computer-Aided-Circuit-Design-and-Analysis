@@ -10,4 +10,5 @@ using namespace std;
 class CurrentSource : public Device {
    public:
     CurrentSource(string name_in, string node_p, string node_n, double value_in);
+    virtual Matrix stampMatrix() const override;
 };

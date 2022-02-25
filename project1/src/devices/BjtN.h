@@ -10,4 +10,5 @@ using namespace std;
 class BjtN : public Device {
    public:
     BjtN(string name_in, string node_C, string node_B, string node_E, double value_in = -1.0);
+    virtual Matrix stampMatrix() const override;
 };

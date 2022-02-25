@@ -10,3 +10,7 @@ Resistor::Resistor(string name_in, string node_p, string node_n, double value_in
     value = value_in;
     group = group_in;
 }
+
+Matrix Resistor::stampMatrix() const{
+    return Matrix();
+}
