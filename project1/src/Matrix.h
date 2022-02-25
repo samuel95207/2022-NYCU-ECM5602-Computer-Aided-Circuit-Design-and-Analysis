@@ -36,6 +36,7 @@ class Matrix {
     Matrix adjoint() const;
     Matrix inverse() const;
     static Matrix solveEquation(const Matrix& coefficientMatrix ,const Matrix& resultMatrix);
+    bool stamp(const Matrix& matrix, int rowOffset, int colOffset);
 
 
 
