@@ -56,6 +56,7 @@ class Circuit {
 
     // Algorithms
     void applyStamps();
+    Matrix solve();
 
    private:
     void _createXVector();

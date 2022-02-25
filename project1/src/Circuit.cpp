@@ -12,7 +12,7 @@ using namespace std;
 
 Circuit::Circuit() {}
 Circuit::~Circuit() {
-    for(auto device : devices){
+    for (auto device : devices) {
         delete device;
     }
 }
@@ -171,8 +171,37 @@ void Circuit::applyStamps() {
                 rhsMatrix.setValue(nodeNRow, 0, newNodeNValue);
             }
         }
+
+        auto nodes = device->getNodes();
+        int nodesSize = nodes.size();
+        if (nodesSize == 2) {
+            string nodeP = nodes[0];
+            string nodeN = nodes[1];
+            vector<int> Offsets;
+            Matrix stampMatrix = device->stampMatrix();
+            // device->printInfo();
+            // cout << device->getName() << endl;
+            if (nodeP != "0") {
+                Offsets.push_back(xIndexMap[nodeP]);
+            }
+            if (nodeN != "0") {
+                Offsets.push_back(xIndexMap[nodeN]);
+            }
+            if (device->getGroup() == "G2" || device->getGroup() == "g2") {
+                Offsets.push_back(xIndexMap[device->getName()]);
+            }
+            if (device->getType() == DeviceType::VOLTAGE_SRC) {
+                Offsets.push_back(xIndexMap[device->getName()]);
+            }
+            mnaMatrix.stamp(stampMatrix, Offsets, Offsets);
+        }
     }
+    mnaMatrix.print();
 }
+
+
+Matrix Circuit::solve() { return Matrix::solveEquation(mnaMatrix, rhsMatrix); }
+
 
 
 

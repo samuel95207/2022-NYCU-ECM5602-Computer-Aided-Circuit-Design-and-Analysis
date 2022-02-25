@@ -11,6 +11,25 @@ Resistor::Resistor(string name_in, string node_p, string node_n, double value_in
     group = group_in;
 }
 
-Matrix Resistor::stampMatrix() const{
+Matrix Resistor::stampMatrix() const {
+    if (group == "G2" || group == "g2") {
+        if (nodes[0] == "0" && nodes[1] == "0") {
+            return Matrix({{-value}});
+        } else if (nodes[0] == "0") {
+            return Matrix({{0.0, -1.0}, {-1.0, -value}});
+        } else if (nodes[1] == "0") {
+            return Matrix({{0.0, 1.0}, {1.0, -value}});
+        } else {
+            return Matrix({{0.0, 0.0, 1.0}, {0.0, 0.0, -1.0}, {1.0, -1.0, -value}});
+        }
+    } else {
+        if (nodes[0] == "0" && nodes[1] == "0") {
+            return Matrix();
+        } else if (nodes[0] == "0" || nodes[1] == "0") {
+            return Matrix({{1.0 / value}});
+        } else {
+            return Matrix({{1.0 / value, -1.0 / value}, {-1.0 / value, 1.0 / value}});
+        }
+    }
     return Matrix();
 }
