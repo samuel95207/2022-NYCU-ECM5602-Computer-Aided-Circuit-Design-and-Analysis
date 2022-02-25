@@ -9,6 +9,10 @@
 using namespace std;
 
 
+string Device::getName() const { return name; }
+
+double Device::getValue() const { return value; }
+
 DeviceType Device::getType() const { return type; }
 
 string Device::getGroup() const { return group; }

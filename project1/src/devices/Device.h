@@ -28,6 +28,8 @@ class Device {
     string group = "";
 
    public:
+    string getName() const;
+    double getValue() const;
     DeviceType getType() const;
     string getGroup() const;
     vector<string> getNodes() const;
