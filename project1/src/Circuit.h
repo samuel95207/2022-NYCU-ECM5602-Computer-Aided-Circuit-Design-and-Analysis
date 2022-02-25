@@ -30,6 +30,7 @@ class Circuit {
     list<Device> devices;
     vector<xVectorElement> xVector;
     Matrix mnaMatrix;
+    Matrix rhsMatrix;
 
     vector<string> nodeList;
     vector<pair<string, Device*>> g2List;
@@ -41,9 +42,14 @@ class Circuit {
 
    public:
     Circuit();
+
+    // I/O
     void readFile(string fileName);
     void writeFile(string mnaFilename, string xVecFilename, string rhsFilename) const;
     void printDevices() const;
+
+    // Algorithms
+    void applyStamps();
 
    private:
     void _createXVector();

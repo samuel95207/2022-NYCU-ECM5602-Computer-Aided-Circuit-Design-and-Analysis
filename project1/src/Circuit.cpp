@@ -116,6 +116,7 @@ void Circuit::readFile(string fileName) {
     _createXVector();
 
     mnaMatrix = Matrix(xVector.size(), xVector.size());
+    rhsMatrix = Matrix(xVector.size(), 1);
 }
 
 void Circuit::writeFile(string mnaFilename, string xVecFilename, string rhsFilename) const {
@@ -130,6 +131,7 @@ void Circuit::writeFile(string mnaFilename, string xVecFilename, string rhsFilen
     xVecFile.close();
 
     ofstream rhsFile(rhsFilename.c_str());
+    rhsFile << rhsMatrix;
     rhsFile.close();
 }
 
@@ -140,6 +142,32 @@ void Circuit::printDevices() const {
         cout << "\n";
     }
 };
+
+
+void Circuit::applyStamps() {
+    for (auto device : devices) {
+        if (device.getType() == DeviceType::VOLTAGE_SRC) {
+            int row = xIndexMap[device.getName()];
+            double newValue = rhsMatrix.getValue(row, 0) + device.getValue();
+            rhsMatrix.setValue(row, 0, newValue);
+        } else if (device.getType() == DeviceType::CURRENT_SRC) {
+            auto nodes = device.getNodes();
+            string nodeP = nodes[0];
+            string nodeN = nodes[1];
+            if (nodeP != "0") {
+                int nodePRow = xIndexMap[nodeP];
+                double newNodePValue = rhsMatrix.getValue(nodePRow, 0) - device.getValue();
+                rhsMatrix.setValue(nodePRow, 0, newNodePValue);
+            }
+            if (nodeN != "0") {
+                int nodeNRow = xIndexMap[nodeN];
+                double newNodeNValue = rhsMatrix.getValue(nodeNRow, 0) + device.getValue();
+                rhsMatrix.setValue(nodeNRow, 0, newNodeNValue);
+            }
+        }
+    }
+}
+
 
 
 void Circuit::_createXVector() {
