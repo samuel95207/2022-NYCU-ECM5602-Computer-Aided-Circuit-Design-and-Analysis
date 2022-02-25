@@ -35,8 +35,8 @@ class Matrix {
     double determinant() const;
     Matrix adjoint() const;
     Matrix inverse() const;
-    static Matrix solveEquation(const Matrix& coefficientMatrix ,const Matrix& resultMatrix);
-    bool stamp(const Matrix& matrix, int rowOffset, int colOffset);
+    static Matrix solveEquation(const Matrix& coefficientMatrix, const Matrix& resultMatrix);
+    bool stamp(const Matrix& matrix, const vector<int>& rowOffsets, const vector<int>& colOffsets);
 
 
 
@@ -63,5 +63,5 @@ class Matrix {
     Matrix operator+() const;
     bool operator==(const Matrix& matrix) const;
     bool operator!=(const Matrix& matrix) const;
-    friend ostream &operator<<(std::ostream &out, const Matrix &element);
+    friend ostream& operator<<(std::ostream& out, const Matrix& element);
 };

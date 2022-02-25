@@ -263,7 +263,7 @@ Matrix Matrix::solveEquation(const Matrix& coefficientMatrix, const Matrix& resu
 
 
 
-bool Matrix::stamp(const Matrix& matrix, int rowOffset, int colOffset) {
+bool Matrix::stamp(const Matrix& matrix, const vector<int>& rowOffsets, const vector<int>& colOffsets) {
     if (matrix.row > row) {
         cerr << "Error! stamping matrix row out of bound.\n";
         return false;
@@ -272,18 +272,29 @@ bool Matrix::stamp(const Matrix& matrix, int rowOffset, int colOffset) {
         cerr << "Error! stamping matrix col out of bound.\n";
         return false;
     }
-    if (matrix.row + rowOffset > row || rowOffset < 0) {
-        cerr << "Error! stamping matrix rowOffset out of bound.\n";
+    if (matrix.row != rowOffsets.size()) {
+        cerr << "Error! stamping matrix row != rowOffsets.size().\n";
         return false;
     }
-    if (matrix.col + colOffset > col || colOffset < 0) {
-        cerr << "Error! stamping matrix colOffset out of bound.\n";
+    if (matrix.col != colOffsets.size()) {
+        cerr << "Error! stamping matrix col != colOffsets.size().\n";
         return false;
     }
 
-    for (int i = 0; i < matrix.row; i++) {
-        for (int j = 0; j < matrix.col; j++) {
-            data[i + rowOffset][j + colOffset] += matrix.data[i][j];
+    for (int i = 0;i < rowOffsets.size();i++) {
+        for (int j = 0;j < colOffsets.size();j++) {
+            int rowOffset = rowOffsets[i];
+            int colOffset = colOffsets[j];
+
+            if (matrix.row + rowOffset > row || rowOffset < 0) {
+                cerr << "Error! stamping matrix rowOffset out of bound.\n";
+                return false;
+            }
+            if (matrix.col + colOffset > col || colOffset < 0) {
+                cerr << "Error! stamping matrix colOffset out of bound.\n";
+                return false;
+            }
+            data[rowOffset][colOffset] += matrix.data[i][j];
         }
     }
 
