@@ -1,5 +1,6 @@
 #include "Matrix.h"
 
+#include <iomanip>
 #include <iostream>
 #include <vector>
 
@@ -137,7 +138,7 @@ void Matrix::print() const {
     for (int i = 0; i < row; i++) {
         cout << "|\t";
         for (int j = 0; j < col; j++) {
-            cout << data[i][j] << "\t";
+            cout << setprecision(3) << data[i][j] << "\t";
         }
         cout << "|\n";
     }
@@ -286,16 +287,16 @@ bool Matrix::stamp(const Matrix& matrix, const vector<int>& rowOffsets, const ve
         return false;
     }
 
-    for (int i = 0;i < rowOffsetsSize;i++) {
-        for (int j = 0;j < colOffsetsSize;j++) {
+    for (int i = 0; i < rowOffsetsSize; i++) {
+        for (int j = 0; j < colOffsetsSize; j++) {
             int rowOffset = rowOffsets[i];
             int colOffset = colOffsets[j];
 
-            if (matrix.row + rowOffset > row || rowOffset < 0) {
+            if (rowOffset > row || rowOffset < 0) {
                 cerr << "Error! stamping matrix rowOffset out of bound.\n";
                 return false;
             }
-            if (matrix.col + colOffset > col || colOffset < 0) {
+            if (colOffset > col || colOffset < 0) {
                 cerr << "Error! stamping matrix colOffset out of bound.\n";
                 return false;
             }
