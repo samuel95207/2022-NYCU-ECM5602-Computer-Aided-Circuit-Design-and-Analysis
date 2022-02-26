@@ -54,3 +54,9 @@ case%:
 leak_case%:
 	@mkdir -p outputs
 	@valgrind $(TARGET) inputs/circuit_netlist_case$(patsubst leak_case%,%,$@).txt outputs/output_mnaMatrix_$(patsubst case%,%,$@).txt outputs/output_xVector_$(patsubst case%,%,$@).txt outputs/output_rhs_$(patsubst case%,%,$@).txt
+
+zip:
+	@make clean
+	@make
+	@rm -f 0710764.zip
+	@zip -r 0710764.zip src bin/Project1 makefile README.md
