@@ -36,8 +36,17 @@ class Matrix {
     double determinant() const;
     Matrix adjoint() const;
     Matrix inverse() const;
-    static Matrix solveEquation(const Matrix& coefficientMatrix, const Matrix& resultMatrix);
+    pair<pair<Matrix, Matrix>, Matrix> LUDecomposition() const;
+    static Matrix solveEquation(const Matrix& coefficientMatrix, const Matrix& resultMatrix,
+                                string method = "LUDecomposition");
     bool stamp(const Matrix& matrix, const vector<int>& rowOffsets, const vector<int>& colOffsets);
+    bool swapRow(int row1, int row2);
+    bool swapCol(int col1, int col2);
+
+
+   private:
+    static Matrix _solveEquationUsingInv(const Matrix& coefficientMatrix, const Matrix& resultMatrix);
+    static Matrix _solveEquationUsingLUDecomposition(const Matrix& coefficientMatrix, const Matrix& resultMatrix);
 
 
 
