@@ -95,7 +95,7 @@ void Circuit::readFile(string fileName) {
                 break;
         }
         if (device->getType() != DeviceType::NONE) {
-            if (device->getType() == DeviceType::VOLTAGE_SRC ||
+            if (device->getType() == DeviceType::VOLTAGE_SRC || device->getType() == DeviceType::INDUCTOR ||
                 (device->getType() == DeviceType::RESISTOR &&
                  (device->getGroup() == "G2" || device->getGroup() == "g2"))) {
                 g2List.push_back(pair<string, Device*>(name, device));
