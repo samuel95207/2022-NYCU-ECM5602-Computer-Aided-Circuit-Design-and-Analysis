@@ -42,5 +42,5 @@ class Device {
     vector<string> getNodes() const;
     void printInfo() const;
 
-    virtual Matrix stampMatrix() const = 0;
+    virtual pair<Matrix, Matrix> stampMatrix() const = 0;
 };

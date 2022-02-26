@@ -11,6 +11,6 @@ MosfetP::MosfetP(string name_in, string node_D, string node_G, string node_S, do
     value = value_in;
 }
 
-Matrix MosfetP::stampMatrix() const{
-    return Matrix();
+ pair<Matrix, Matrix>MosfetP::stampMatrix() const{
+    return pair<Matrix, Matrix>(Matrix(), Matrix());
 }

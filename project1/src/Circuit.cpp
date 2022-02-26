@@ -152,33 +152,15 @@ void Circuit::printDevices() const {
 
 void Circuit::applyStamps() {
     for (auto device : devices) {
-        if (device->getType() == DeviceType::VOLTAGE_SRC) {
-            int row = xIndexMap[device->getName()];
-            double newValue = rhsMatrix.getValue(row, 0) + device->getValue();
-            rhsMatrix.setValue(row, 0, newValue);
-        } else if (device->getType() == DeviceType::CURRENT_SRC) {
-            auto nodes = device->getNodes();
-            string nodeP = nodes[0];
-            string nodeN = nodes[1];
-            if (nodeP != "0") {
-                int nodePRow = xIndexMap[nodeP];
-                double newNodePValue = rhsMatrix.getValue(nodePRow, 0) - device->getValue();
-                rhsMatrix.setValue(nodePRow, 0, newNodePValue);
-            }
-            if (nodeN != "0") {
-                int nodeNRow = xIndexMap[nodeN];
-                double newNodeNValue = rhsMatrix.getValue(nodeNRow, 0) + device->getValue();
-                rhsMatrix.setValue(nodeNRow, 0, newNodeNValue);
-            }
-        }
-
         auto nodes = device->getNodes();
         int nodesSize = nodes.size();
         if (nodesSize == 2) {
             string nodeP = nodes[0];
             string nodeN = nodes[1];
             vector<int> Offsets;
-            Matrix stampMatrix = device->stampMatrix();
+            auto stampMatrices = device->stampMatrix();
+            Matrix* mnaStamp = &(stampMatrices.first);
+            Matrix* rhsStamp = &(stampMatrices.second);
             // device->printInfo();
             // cout << device->getName() << endl;
             if (nodeP != "0") {
@@ -193,10 +175,18 @@ void Circuit::applyStamps() {
             if (device->getType() == DeviceType::VOLTAGE_SRC) {
                 Offsets.push_back(xIndexMap[device->getName()]);
             }
-            mnaMatrix.stamp(stampMatrix, Offsets, Offsets);
+
+            if (mnaStamp->isValid()) {
+                mnaMatrix.stamp(*mnaStamp, Offsets, Offsets);
+            }
+
+            if (rhsStamp->isValid()) {
+                rhsMatrix.stamp(*rhsStamp, Offsets, vector<int>({0}));
+            }
         }
     }
     mnaMatrix.print();
+    rhsMatrix.print();
 }
 
 

@@ -11,25 +11,34 @@ Resistor::Resistor(string name_in, string node_p, string node_n, double value_in
     group = group_in;
 }
 
-Matrix Resistor::stampMatrix() const {
+pair<Matrix, Matrix> Resistor::stampMatrix() const {
+    Matrix mnaStamp = Matrix();
+    Matrix rhsStamp = Matrix();
     if (group == "G2" || group == "g2") {
         if (nodes[0] == "0" && nodes[1] == "0") {
-            return Matrix({{-value}});
+            mnaStamp = Matrix({{-value}});
+            rhsStamp = Matrix(1, 1);
         } else if (nodes[0] == "0") {
-            return Matrix({{0.0, -1.0}, {-1.0, -value}});
+            mnaStamp = Matrix({{0.0, -1.0}, {-1.0, -value}});
+            rhsStamp = Matrix(2, 1);
         } else if (nodes[1] == "0") {
-            return Matrix({{0.0, 1.0}, {1.0, -value}});
+            mnaStamp = Matrix({{0.0, 1.0}, {1.0, -value}});
+            rhsStamp = Matrix(2, 1);
         } else {
-            return Matrix({{0.0, 0.0, 1.0}, {0.0, 0.0, -1.0}, {1.0, -1.0, -value}});
+            mnaStamp = Matrix({{0.0, 0.0, 1.0}, {0.0, 0.0, -1.0}, {1.0, -1.0, -value}});
+            rhsStamp = Matrix(3, 1);
         }
     } else {
         if (nodes[0] == "0" && nodes[1] == "0") {
-            return Matrix();
+            mnaStamp = Matrix();
+            rhsStamp = Matrix();
         } else if (nodes[0] == "0" || nodes[1] == "0") {
-            return Matrix({{1.0 / value}});
+            mnaStamp = Matrix({{1.0 / value}});
+            rhsStamp = Matrix(1, 1);
         } else {
-            return Matrix({{1.0 / value, -1.0 / value}, {-1.0 / value, 1.0 / value}});
+            mnaStamp = Matrix({{1.0 / value, -1.0 / value}, {-1.0 / value, 1.0 / value}});
+            rhsStamp = Matrix(2, 1);
         }
     }
-    return Matrix();
+    return pair<Matrix, Matrix>(mnaStamp, rhsStamp);
 }

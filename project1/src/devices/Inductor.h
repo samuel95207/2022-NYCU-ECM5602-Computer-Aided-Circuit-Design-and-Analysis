@@ -10,5 +10,5 @@ using namespace std;
 class Inductor : public Device {
    public:
     Inductor(string name_in, string node_p, string node_n, double value_in);
-    virtual Matrix stampMatrix() const override;
+    virtual pair<Matrix, Matrix> stampMatrix() const override;
 };

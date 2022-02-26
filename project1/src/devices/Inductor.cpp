@@ -10,6 +10,6 @@ Inductor::Inductor(string name_in, string node_p, string node_n, double value_in
     value = value_in;
 }
 
-Matrix Inductor::stampMatrix() const{
-    return Matrix();
+ pair<Matrix, Matrix>Inductor::stampMatrix() const{
+    return pair<Matrix, Matrix>(Matrix(), Matrix());
 }

@@ -12,15 +12,21 @@ VoltageSource::VoltageSource(string name_in, string node_p, string node_n, doubl
     value = value_in;
 }
 
-Matrix VoltageSource::stampMatrix() const {
+pair<Matrix, Matrix> VoltageSource::stampMatrix() const {
+    Matrix mnaStamp = Matrix();
+    Matrix rhsStamp = Matrix();
     if (nodes[0] == "0" && nodes[1] == "0") {
-        return Matrix();
+        mnaStamp = Matrix({{0}});
+        rhsStamp = Matrix({{value}});
     } else if (nodes[0] == "0") {
-        return Matrix({{0.0, -1.0}, {-1.0, 0.0}});
+        mnaStamp = Matrix({{0.0, -1.0}, {-1.0, 0.0}});
+        rhsStamp = Matrix({{0}, {value}});
     } else if (nodes[1] == "0") {
-        return Matrix({{0.0, 1.0}, {1.0, 0.0}});
+        mnaStamp = Matrix({{0.0, 1.0}, {1.0, 0.0}});
+        rhsStamp = Matrix({{0}, {value}});
     } else {
-        return Matrix({{0.0, 0.0, 1.0}, {0.0, 0.0, -1.0}, {1.0, -1.0, 0.0}});
+        mnaStamp = Matrix({{0.0, 0.0, 1.0}, {0.0, 0.0, -1.0}, {1.0, -1.0, 0.0}});
+        rhsStamp = Matrix({{0}, {0}, {value}});
     }
-    return Matrix();
+    return pair<Matrix, Matrix>(mnaStamp, rhsStamp);
 }

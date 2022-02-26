@@ -12,6 +12,4 @@ BjtP::BjtP(string name_in, string node_C, string node_B, string node_E, double v
 }
 
 
-Matrix BjtP::stampMatrix() const{
-    return Matrix();
-}
+pair<Matrix, Matrix> BjtP::stampMatrix() const { return pair<Matrix, Matrix>(Matrix(), Matrix()); }

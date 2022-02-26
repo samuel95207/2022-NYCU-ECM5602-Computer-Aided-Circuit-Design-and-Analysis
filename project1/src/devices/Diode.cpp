@@ -12,6 +12,4 @@ Diode::Diode(string name_in, string node_p, string node_n, double value_in) {
     value = value_in;
 }
 
-Matrix Diode::stampMatrix() const{
-    return Matrix();
-}
+pair<Matrix, Matrix> Diode::stampMatrix() const { return pair<Matrix, Matrix>(Matrix(), Matrix()); }

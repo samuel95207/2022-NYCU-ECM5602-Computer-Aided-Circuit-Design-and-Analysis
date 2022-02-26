@@ -10,6 +10,37 @@ CurrentSource::CurrentSource(string name_in, string node_p, string node_n, doubl
     value = value_in;
 }
 
-Matrix CurrentSource::stampMatrix() const{
-    return Matrix();
+pair<Matrix, Matrix> CurrentSource::stampMatrix() const {
+    Matrix mnaStamp = Matrix();
+    Matrix rhsStamp = Matrix();
+    if (group == "G2" || group == "g2") {
+        if (nodes[0] == "0" && nodes[1] == "0") {
+            mnaStamp = Matrix({{1.0}});
+            rhsStamp = Matrix({{value}});
+        } else if (nodes[0] == "0") {
+            mnaStamp = Matrix({{0.0, -1.0}, {0.0, 1.0}});
+            rhsStamp = Matrix({{0}, {value}});
+        } else if (nodes[1] == "0") {
+            mnaStamp = Matrix({{0.0, 1.0}, {0.0, 1.0}});
+            rhsStamp = Matrix({{0}, {value}});
+        } else {
+            mnaStamp = Matrix({{0.0, 0.0, 1.0}, {0.0, 0.0, -1.0}, {0.0, 0.0, 1.0}});
+            rhsStamp = Matrix({{0}, {0}, {value}});
+        }
+    } else {
+        if (nodes[0] == "0" && nodes[1] == "0") {
+            mnaStamp = Matrix();
+            rhsStamp = Matrix();
+        } else if (nodes[0] == "0") {
+            mnaStamp = Matrix({{0.0}});
+            rhsStamp = Matrix({{value}});
+        } else if (nodes[1] == "0") {
+            mnaStamp = Matrix({{0.0}});
+            rhsStamp = Matrix({{-value}});
+        } else {
+            mnaStamp = Matrix({{0.0, 0.0}, {0.0, 0.0}});
+            rhsStamp = Matrix({{-value}, {value}});
+        }
+    }
+    return pair<Matrix, Matrix>(mnaStamp, rhsStamp);
 }

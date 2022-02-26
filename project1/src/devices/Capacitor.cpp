@@ -11,6 +11,4 @@ Capacitor::Capacitor(string name_in, string node_p, string node_n, double value_
 }
 
 
-Matrix Capacitor::stampMatrix() const{
-    return Matrix();
-}
+pair<Matrix, Matrix> Capacitor::stampMatrix() const { return pair<Matrix, Matrix>(Matrix(), Matrix()); }
