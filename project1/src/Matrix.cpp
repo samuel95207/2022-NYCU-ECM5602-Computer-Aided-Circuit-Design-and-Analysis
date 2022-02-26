@@ -325,7 +325,7 @@ pair<pair<Matrix, Matrix>, Matrix> Matrix::LUDecomposition() const {
             }
             double value = copiedMatrix.data[i][k] - sum;
             if (value == 0.0) {
-                value = 1E-15;
+                value = 1E-10;
             }
             U.data[i][k] = value;
         }
