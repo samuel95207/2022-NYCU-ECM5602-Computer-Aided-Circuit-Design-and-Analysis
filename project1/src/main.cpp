@@ -13,7 +13,7 @@ int main(int argc, char** argv) {
     C.applyStamps();
     C.writeFile(argv[2], argv[3], argv[4]);
 
-    C.solve().print();
+    // C.solve().print();
 
     // Matrix A({{1, 3, 7}, {7, 2, 8}, {2, 6, 3}});
     // Matrix B({{2, 5, 3}});
