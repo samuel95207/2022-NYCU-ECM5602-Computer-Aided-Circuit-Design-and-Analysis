@@ -1,4 +1,15 @@
 # Project1 - Parser & Stamping
+## File Structure
+```
+├── src (Source code)
+|   ├── main.cpp
+│   .
+|   .
+|   .
+├── bin
+|   └──Project1 (Executable binary, will be replaced after make)
+└── README.md (Information of how to compile/execute my codes/program)
+```
 ## Usage
 ```
 make
