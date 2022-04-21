@@ -48,15 +48,16 @@ cleanobj :
 	@echo "Remove object files"
 	rm -rf $(OBJ_DIR)/*.o
 
-case%:
-	@mkdir -p outputs
-	@$(TARGET) inputs/circuit_netlist_case$(patsubst case%,%,$@).txt outputs/output_mnaMatrix_$(patsubst case%,%,$@).txt outputs/output_xVector_$(patsubst case%,%,$@).txt outputs/output_rhs_$(patsubst case%,%,$@).txt
+project1_case%:
+	@mkdir -p project1/outputs
+	@$(TARGET) project1/inputs/circuit_netlist_case$(patsubst project1_case%,%,$@).txt project1/outputs/output_mnaMatrix_$(patsubst project1_case%,%,$@).txt project1/outputs/output_xVector_$(patsubst project1_case%,%,$@).txt project1/outputs/output_rhs_$(patsubst project1_case%,%,$@).txt
+
 leak_case%:
 	@mkdir -p outputs
-	@valgrind $(TARGET) inputs/circuit_netlist_case$(patsubst leak_case%,%,$@).txt outputs/output_mnaMatrix_$(patsubst case%,%,$@).txt outputs/output_xVector_$(patsubst case%,%,$@).txt outputs/output_rhs_$(patsubst case%,%,$@).txt
+	@valgrind $(TARGET) project1/inputs/circuit_netlist_case$(patsubst leak_case%,%,$@).txt project1/outputs/output_mnaMatrix_$(patsubst case%,%,$@).txt project1/outputs/output_xVector_$(patsubst case%,%,$@).txt project1/outputs/output_rhs_$(patsubst case%,%,$@).txt
 
-zip:
+project1_zip:
 	@make clean
 	@make
-	@rm -f 0710764.zip
-	@zip -r 0710764.zip src bin/Project1 makefile README.md
+	@rm -f project1/0710764.zip
+	@zip -r project1/0710764.zip src bin/Project1 makefile project1/README.md
