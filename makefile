@@ -50,7 +50,11 @@ cleanobj :
 
 project1_case%:
 	@mkdir -p project1/outputs
-	@$(TARGET) project1/inputs/circuit_netlist_case$(patsubst project1_case%,%,$@).txt project1/outputs/output_mnaMatrix_$(patsubst project1_case%,%,$@).txt project1/outputs/output_xVector_$(patsubst project1_case%,%,$@).txt project1/outputs/output_rhs_$(patsubst project1_case%,%,$@).txt
+	@$(TARGET) project1/inputs/circuit_netlist_case$(patsubst project1_case%,%,$@).txt project1/outputs/output_mnaMatrix_case$(patsubst project1_case%,%,$@).txt project1/outputs/output_xVector_case$(patsubst project1_case%,%,$@).txt project1/outputs/output_rhs_case$(patsubst project1_case%,%,$@).txt
+	@diff project1/golden/output_mnaMatrix_case$(patsubst project1_case%,%,$@).txt project1/outputs/output_mnaMatrix_case$(patsubst project1_case%,%,$@).txt
+	@diff project1/golden/output_xVector_case$(patsubst project1_case%,%,$@).txt project1/outputs/output_xVector_case$(patsubst project1_case%,%,$@).txt 
+	@diff project1/golden/output_rhs_case$(patsubst project1_case%,%,$@).txt project1/outputs/output_rhs_case$(patsubst project1_case%,%,$@).txt
+
 
 leak_case%:
 	@mkdir -p outputs
